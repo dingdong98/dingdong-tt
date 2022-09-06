@@ -74,6 +74,9 @@
         >
       </div>
     </div>
+
+    <!-- 文章评论区域 -->
+    <comment-list></comment-list>
   </div>
 </template>
 
@@ -86,7 +89,11 @@ import {
 } from "@/api";
 import { timeAgo } from "@/utils/formate";
 import { getAttentionApi } from "@/api";
+import CommentList from "./CommentList.vue";
 export default {
+  components: {
+    CommentList,
+  },
   data() {
     return {
       articleDetail: {}, //文章详情数据对象

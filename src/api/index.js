@@ -122,6 +122,36 @@ export const getPraiseApi = ({ artId }) => {
 export const cancelGetPraiseApi = ({ artId }) => {
   return request({
     url: `/v1_0/article/likings/${artId}`,
-    method: 'DELETE'
+    method: "DELETE",
+  });
+};
+// 文章详情评论接口
+export const getCommentListApi = ({ source, offset = null, limit = 10 }) => {
+  return request({
+    url: "/v1_0/comments",
+    method: "GET",
+    params: {
+      type: "a",
+      source,
+      offset,
+      limit,
+    },
+  });
+};
+// 取消对文章不喜欢接口（喜欢接口）
+export const getCommentLikeApi = ({ artId }) => {
+  return request({
+    url: `/v1_0/article/dislikes/${artId}`,
+    method: "DELETE",
+  });
+};
+// 对文章不喜欢接口（不喜欢接口）
+export const getCommentUnLikeApi = ({ artId }) => {
+  return request({
+    url: `/v1_0/article/dislikes`,
+    method: "POST",
+    data: {
+      target: artId,
+    },
   });
 };
