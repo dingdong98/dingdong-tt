@@ -1,45 +1,54 @@
 <template>
   <div>
-    <!-- 评论列表 -->
-    <div
-      class="cmt-list"
-      :class="isShowButton ? 'art-cmt-container-2' : 'art-cmt-container-1'"
+    <van-list
+      v-model="loading"
+      :finished="finished"
+      finished-text="没有更多了"
+      @load="onLoad"
+      offset="50"
+      :immediate-check="false"
     >
-      <!-- 评论的 Item 项 -->
-      <div class="cmt-item" v-for="(item, index) in commentList" :key="index">
-        <!-- 头部区域 -->
-        <div class="cmt-header">
-          <!-- 头部左侧 -->
-          <div class="cmt-header-left">
-            <img :src="item.aut_photo" class="avatar" />
-            <span class="uname">{{ item.aut_name }}</span>
+      <!-- 评论列表 -->
+      <div
+        class="cmt-list"
+        :class="isShowButton ? 'art-cmt-container-2' : 'art-cmt-container-1'"
+      >
+        <!-- 评论的 Item 项 -->
+        <div class="cmt-item" v-for="(item, index) in commentList" :key="index">
+          <!-- 头部区域 -->
+          <div class="cmt-header">
+            <!-- 头部左侧 -->
+            <div class="cmt-header-left">
+              <img :src="item.aut_photo" class="avatar" />
+              <span class="uname">{{ item.aut_name }}</span>
+            </div>
+            <!-- 头部右侧---喜欢or不喜欢图标 -->
+            <div class="cmt-header-right">
+              <van-icon
+                name="like"
+                size="16"
+                color="red"
+                v-if="item.is_liking === true"
+                @click="likeFn(true, item)"
+              />
+              <van-icon
+                name="like-o"
+                size="16"
+                color="gray"
+                v-else
+                @click="likeFn(false, item)"
+              />
+            </div>
           </div>
-          <!-- 头部右侧---喜欢or不喜欢图标 -->
-          <div class="cmt-header-right">
-            <van-icon
-              name="like"
-              size="16"
-              color="red"
-              v-if="item.is_liking === true"
-              @click="likeFn(true, item)"
-            />
-            <van-icon
-              name="like-o"
-              size="16"
-              color="gray"
-              v-else
-              @click="likeFn(false, item)"
-            />
+          <!-- 主体区域 -->
+          <div class="cmt-body">
+            {{ item.content }}
           </div>
+          <!-- 尾部区域 -->
+          <div class="cmt-footer">{{ formateDate(item.pubdate) }}</div>
         </div>
-        <!-- 主体区域 -->
-        <div class="cmt-body">
-          {{ item.content }}
-        </div>
-        <!-- 尾部区域 -->
-        <div class="cmt-footer">{{ formateDate(item.pubdate) }}</div>
       </div>
-    </div>
+    </van-list>
 
     <!-- 底部添加评论区域 - 1 -->
     <div class="add-cmt-box van-hairline--top" v-if="isShowButton === false">
@@ -57,11 +66,17 @@
     <!-- 底部添加评论区域 - 2 -->
     <div class="cmt-box van-hairline--top" v-else>
       <textarea
+        v-model="commentValue"
         placeholder="友善评论、理性发言、阳光心灵"
         v-autofocus
-        @blur="isShowButton = false"
+        @blur="blurFn"
       ></textarea>
-      <van-button type="default" disabled>发布</van-button>
+      <van-button
+        type="default"
+        :disabled="commentValue.length === 0"
+        @click="sendFn"
+        >发布</van-button
+      >
     </div>
   </div>
 </template>
@@ -78,7 +93,11 @@ export default {
     return {
       commentList: [], //获取评论数据
       isShowButton: false, //控制底部评论框的显示和隐藏
-      totalComment: "",
+      totalComment: "", //评论总数
+      commentValue: "", //评论区内容
+      loading: false, // 底部加载状态
+      finished: false, // 底部是否加载完成
+      offset: null, //偏移量，默认为null第一页，axios遇到null会忽略次参数
     };
   },
   async created() {
@@ -90,8 +109,15 @@ export default {
       const res = await getCommentListApi({
         source: this.$route.query.artid,
       });
-      this.commentList = res.data.data.results;
+      // 判断是否还有数据
+      if (res.data.data.results.length === 0) {
+        this.finished = true;
+      }
+      this.commentList = [...this.commentList, ...res.data.data.results];
       this.totalComment = res.data.data.total_count || "";
+      this.offset = res.data.data.lase_id;
+      // 关闭加载状态
+      this.loading = false;
     },
     // 时间格式化函数
     formateDate: timeAgo,
@@ -119,7 +145,20 @@ export default {
         console.log("设置喜欢");
       }
     },
-    // 底部评论框的点击事件
+    // 点击发布事件
+    sendFn() {
+      console.log(this.commentValue);
+    },
+    // 底部评论区域失去焦点
+    blurFn() {
+      setTimeout(() => {
+        this.isShowCmtInput = false;
+      });
+    },
+    // 下拉加载更多
+    async onLoad() {
+      this.getCommentList();
+    },
   },
 };
 </script>
