@@ -38,8 +38,11 @@ axios.interceptors.response.use(
 
     // 401代表身份认证过期
     if (error.response.status === 401) {
-      Notify({ type: "warning", message: "身份已过期" });
+      Notify({ type: "warning", message: "身份过期" });
       router.replace("/login");
+    } else if (error.response.status === 500) {
+      //服务器内部出错
+      Notify({ type: "danger", message: "服务器错误" });
     }
     return Promise.reject(error);
   }

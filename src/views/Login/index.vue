@@ -68,7 +68,7 @@ export default {
       // 发送登录网络请求，校验数据
       try {
         const loginResult = await loginApi(this.users);
-        Notify({ type: "success", message: "登录成功" });
+        Notify({ type: "success", message: "登录成功", duration: "500" });
         // 保存token
         setToken(loginResult.data.data.token);
         // 跳转到layout界面

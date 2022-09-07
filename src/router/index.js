@@ -39,6 +39,10 @@ const routes = [
     path: "/detail",
     component: () => import("@/views/ArticleDetail/index.vue"),
   },
+  {
+    path: "/user/edit",
+    component: () => import("@/views/User/UserDetail.vue"),
+  },
 ];
 
 // 创建路由对象

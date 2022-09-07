@@ -155,3 +155,30 @@ export const getCommentUnLikeApi = ({ artId }) => {
     },
   });
 };
+// 获取用户个人资料
+export const getUserDataApi = () => {
+  return request({
+    url: "/v1_0/user/profile",
+  });
+};
+// 编辑用户照片资料
+export const eidtUserPhotoDataApi = (formObj) => {
+  return request({
+    url: "/v1_0/user/photo",
+    method: "PATCH",
+    photo: formObj,
+  });
+};
+// 编辑用户个人资料
+export const changeUserDateApi = ({ name, gender, birthday, intro }) => {
+  return request({
+    url: "/v1_0/user/profile",
+    method: "PATCH",
+    data: {
+      name,
+      gender,
+      birthday,
+      intro,
+    },
+  });
+};

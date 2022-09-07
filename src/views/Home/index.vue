@@ -51,8 +51,8 @@
 
 <script>
 import { getUserChannelApi, getAllChannelApi, updataChannelApi } from "@/api";
-import ArticleList from "./Common/ArticleList.vue";
-import ChannelEdit from "./Common/ChannelEdit.vue";
+import ArticleList from "./HomeDetail/ArticleList.vue";
+import ChannelEdit from "./HomeDetail/ChannelEdit.vue";
 export default {
   components: { ArticleList, ChannelEdit },
   data() {
