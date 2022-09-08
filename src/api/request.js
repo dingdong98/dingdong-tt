@@ -2,7 +2,7 @@
 import theAxios from "axios";
 import { Notify } from "vant";
 import router from "@/router";
-import { getToken } from "@/utils/aboutToken";
+import { getToken, removeToken } from "@/utils/aboutToken";
 
 // 创建一个新的axios实例
 const axios = theAxios.create({
@@ -39,6 +39,7 @@ axios.interceptors.response.use(
     // 401代表身份认证过期
     if (error.response.status === 401) {
       Notify({ type: "warning", message: "身份过期" });
+      removeToken();
       router.replace("/login");
     } else if (error.response.status === 500) {
       //服务器内部出错

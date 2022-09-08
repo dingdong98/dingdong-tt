@@ -1,4 +1,4 @@
-const key = "token";
+const key = "tokenValue";
 
 // 设置token方法
 export const setToken = (token) => {

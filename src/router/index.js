@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { getToken } from "@/utils/aboutToken";
 Vue.use(VueRouter);
 
 // 路由映射表
@@ -52,6 +53,16 @@ const routes = [
 // 创建路由对象
 const router = new VueRouter({
   routes,
+});
+
+// 全局前置守卫
+router.beforeEach((to, from, next) => {
+  // 携带token，禁止回到登录页面
+  if (getToken()?.length > 0 && to.path === "/login") {
+    next(false); //禁止，留在原地
+  } else {
+    next(true); //放行
+  }
 });
 
 export default router;
