@@ -12,6 +12,14 @@ const routes = [
   {
     path: "/login",
     component: () => import("@/views/Login"),
+    // 路由独享守卫
+    beforeEnter: (to, from, next) => {
+      if (getToken()?.length > 0 && to.path === "/login") {
+        next(false);
+      } else {
+        next(true);
+      }
+    },
   },
   {
     path: "/layout",
