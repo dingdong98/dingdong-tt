@@ -7,10 +7,10 @@ export const setToken = (token) => {
 
 // 获取token方法
 export const getToken = () => {
-  return localStorage.getItem("token");
+  return localStorage.getItem(key);
 };
 
 // 移除token方法
 export const removeToken = () => {
-  return localStorage.removeItem("token");
+  return localStorage.removeItem(key);
 };

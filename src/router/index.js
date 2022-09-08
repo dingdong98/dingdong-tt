@@ -14,10 +14,12 @@ const routes = [
     component: () => import("@/views/Login"),
     // 路由独享守卫
     beforeEnter: (to, from, next) => {
-      if (getToken()?.length > 0 && to.path === "/login") {
-        next(false);
+      if (getToken()?.length > 0) {
+        console.log("携带token后，禁止跳转到登录页面");
+        // 1. 想要进登录页不留在原地了, 而是返回首页
+        next("/layout/home");
       } else {
-        next(true);
+        next(true); // 其他情况都跳转
       }
     },
   },
@@ -65,11 +67,10 @@ const router = new VueRouter({
 
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
-  // 携带token，禁止回到登录页面
   if (getToken()?.length > 0 && to.path === "/login") {
-    next(false); //禁止，留在原地
+    next("/layout/home");
   } else {
-    next(true); //放行
+    next();
   }
 });
 
