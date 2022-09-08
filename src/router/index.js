@@ -43,6 +43,10 @@ const routes = [
     path: "/user/edit",
     component: () => import("@/views/User/UserDetail.vue"),
   },
+  {
+    path: "/chat",
+    component: () => import("@/views/Chat"),
+  },
 ];
 
 // 创建路由对象
