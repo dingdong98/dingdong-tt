@@ -102,7 +102,7 @@ export const getAttentionApi = ({ userId }) => {
   });
 };
 // 取消关注用户接口
-export const concelAttentionApi = (targetId) => {
+export const concelAttentionApi = ({ targetId }) => {
   return request({
     url: `/v1_0/user/followings/${targetId}`,
     method: "DELETE",
@@ -125,8 +125,8 @@ export const cancelGetPraiseApi = ({ artId }) => {
     method: "DELETE",
   });
 };
-// 文章详情评论接口
-export const getCommentListApi = ({ source, offset = null, limit = 10 }) => {
+// 文章详情 评论接口
+export const getCommentListApi = ({ source, offset = null, limit = 20000 }) => {
   return request({
     url: "/v1_0/comments",
     method: "GET",
@@ -161,14 +161,6 @@ export const getUserDataApi = () => {
     url: "/v1_0/user/profile",
   });
 };
-// 编辑用户照片资料
-export const eidtUserPhotoDataApi = (formObj) => {
-  return request({
-    url: "/v1_0/user/photo",
-    method: "PATCH",
-    photo: formObj,
-  });
-};
 // 编辑用户个人资料
 export const changeUserDateApi = ({ name, gender, birthday, intro }) => {
   return request({
@@ -187,7 +179,7 @@ export const updateUserPhotoApi = (fd) =>
   request({
     url: "/v1_0/user/photo",
     method: "PATCH",
-    data:  fd , // fd外面一会儿传进来的new FormData() 表单对象
+    data: fd, // fd外面一会儿传进来的new FormData() 表单对象
 
     // 如果你的请求体直接是FormData表单对象, 你也不用自己添加
     // Content-Type, axios发现数据请求体是表单对象, 它也不会转换成json字符串
@@ -196,3 +188,14 @@ export const updateUserPhotoApi = (fd) =>
     // Content-Type: application/json; axios携带的, 前提: data请求体是对象 -> json字符串 -> 发给后台
     // Content-Type: multipart/form-data; 浏览器携带的, 前提: data请求体必须FormData类型对象
   });
+// 用户 - 关注列表
+export const getAttentionListApi = (page = 1, per_page = 100) => {
+  return request({
+    url: `/v1_0/user/followings`,
+    method: "GET",
+    params: {
+      page,
+      per_page,
+    },
+  });
+};

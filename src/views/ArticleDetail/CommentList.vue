@@ -97,28 +97,22 @@ export default {
       commentValue: "", //评论区内容
       loading: false, // 底部加载状态
       finished: false, // 底部是否加载完成
-      offset: null, //偏移量，默认为null第一页，axios遇到null会忽略次参数
+      offset: null, //偏移量，默认为null第一页，axios遇到null会忽略次参数  分页
     };
   },
   async created() {
-    this.getCommentList();
+    // 组件创建时 发送网络请求 初始化数据
+    const res = await getCommentListApi({
+      source: this.$route.query.artid,
+    });
+    console.log("获取评论数据", res);
+    this.commentList = res.data.data.results;
+    this.totalComment = res.data.data.total_count;
+    this.offset = res.data.data.lase_id;
+    this.finished = true;
+    this.loading = false;
   },
   methods: {
-    // 发送网络请求-获取评论数据
-    async getCommentList() {
-      const res = await getCommentListApi({
-        source: this.$route.query.artid,
-      });
-      // 判断是否还有数据
-      if (res.data.data.results.length === 0) {
-        this.finished = true;
-      }
-      this.commentList = [...this.commentList, ...res.data.data.results];
-      this.totalComment = res.data.data.total_count || "";
-      this.offset = res.data.data.lase_id;
-      // 关闭加载状态
-      this.loading = false;
-    },
     // 时间格式化函数
     formateDate: timeAgo,
     // 喜欢/不喜欢  按钮切换
@@ -156,9 +150,7 @@ export default {
       });
     },
     // 下拉加载更多
-    async onLoad() {
-      this.getCommentList();
-    },
+    async onLoad() {},
   },
 };
 </script>

@@ -1,9 +1,11 @@
 <template>
   <div>
     <!-- 二级路由界面 -->
-    <div class="home_container">
-      <router-view></router-view>
-    </div>
+    <keep-alive>
+      <div class="home_container">
+        <router-view></router-view>
+      </div>
+    </keep-alive>
 
     <!-- 底部导航栏 -->
     <van-tabbar route>
@@ -14,7 +16,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: "Layout",
+};
 </script>
 
 <style lang="less" scoped>

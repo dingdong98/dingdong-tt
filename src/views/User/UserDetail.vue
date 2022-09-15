@@ -85,7 +85,7 @@ import { getUserDataApi, updateUserPhotoApi, changeUserDateApi } from "@/api";
 import moment from "moment";
 import { Notify } from "vant";
 export default {
-  name: "UserEdit",
+  name: "UserDetail",
   data() {
     return {
       editUserDate: "", //编辑的用户信息
@@ -117,6 +117,7 @@ export default {
       const res = await updateUserPhotoApi(theFd);
       console.log(res.data.data.photo);
       this.userDate.photo = res.data.data.photo; //修改后台图片数据
+      this.$store.commit("setPhotoImg", this.userDate.photo);
     },
     // 编辑资料-名称点击事件
     nameClickFn() {
@@ -158,7 +159,6 @@ export default {
   },
   async created() {
     this.getUserDate();
-    console.log(this.$store.state.photoimg);
   },
 };
 </script>

@@ -14,6 +14,7 @@ export default new Vuex.Store({
     setPhotoImg(state, payload) {
       console.log(payload);
       state.photoimg = payload;
+      console.log(state.photoimg);
     },
   },
   actions: {},

@@ -6,7 +6,7 @@
       <van-cell>
         <!-- 使用 title 插槽来自定义标题 -->
         <template #icon>
-          <img :src="userDate.photo" class="avatar" />
+          <img :src="$store.state.photoimg" class="avatar" />
         </template>
         <template #title>
           <span class="username">{{ userDate.name }}</span>
@@ -18,16 +18,16 @@
       <!-- 动态、关注、粉丝 -->
       <div class="user-data">
         <div class="user-data-item">
-          <span>0</span>
-          <span>动态</span>
+          <span>2298</span>
+          <span>发布动态</span>
         </div>
         <div class="user-data-item">
-          <span>0</span>
-          <span>关注</span>
+          <span>{{ userAttentions.total_count }}</span>
+          <span>关注用户数</span>
         </div>
         <div class="user-data-item">
-          <span>0</span>
-          <span>粉丝</span>
+          <span>666</span>
+          <span>粉丝数量</span>
         </div>
       </div>
     </div>
@@ -35,7 +35,7 @@
     <!-- 操作面板 -->
     <van-cell-group class="action-card">
       <van-cell icon="edit" title="编辑资料" is-link to="/user/edit" />
-      <van-cell icon="chat-o" title="小智同学" is-link to="/chat" />
+      <van-cell icon="chat-o" title="小智AI助手" is-link to="/chat" />
       <van-cell
         icon="warning-o"
         @click="exitLoginFn"
@@ -47,14 +47,16 @@
 </template>
 
 <script>
-import { getUserDataApi } from "@/api";
+import { getUserDataApi, getAttentionListApi } from "@/api";
 import { Dialog } from "vant";
 import { setToken } from "@/utils/aboutToken";
 import { Notify } from "vant";
 export default {
+  name: "User",
   data() {
     return {
-      userDate: "",
+      userDate: "", //用户基本数据
+      userAttentions: "", //用户关注列表
     };
   },
   methods: {
@@ -74,11 +76,20 @@ export default {
         })
         .catch(() => {});
     },
+    // 获取用户关注列表
+    async getAttentions() {
+      const res = await getAttentionListApi();
+      console.log(res);
+      this.userAttentions = res.data.data;
+    },
   },
   async created() {
+    // 获取用户基本数据
     const res = await getUserDataApi();
-    console.log(res);
     this.userDate = res.data.data;
+
+    // 调用用户关注列表
+    this.getAttentions();
   },
 };
 </script>
@@ -86,11 +97,11 @@ export default {
 <style scoped lang="less">
 .user-container {
   .user-card {
-    background-color: #007bff;
+    background-color: #003472;
     color: white;
     padding-top: 20px;
     .van-cell {
-      background: #007bff;
+      background: #003472;
       color: white;
       &::after {
         display: none;

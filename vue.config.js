@@ -20,4 +20,6 @@ module.exports = defineConfig({
       },
     },
   },
+  // webpack打包时解决index.html请求资源路径问题
+  publicPath: "./",
 });

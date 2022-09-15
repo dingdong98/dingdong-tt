@@ -51,6 +51,7 @@ import { loginApi } from "@/api";
 import { Notify } from "vant";
 import { setToken } from "@/utils/aboutToken";
 export default {
+  name: 'Login',
   data() {
     return {
       users: {

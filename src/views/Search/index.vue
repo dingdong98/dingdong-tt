@@ -60,6 +60,7 @@
 import { getSearchSuggestionApi } from "@/api";
 
 export default {
+  name: 'Search',
   data() {
     return {
       SearchValue: "", //输入框输入的内容

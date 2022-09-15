@@ -11,8 +11,8 @@
           <img
             v-if="list.cover.type === 1"
             class="thumb"
-            :src="list.cover.images[0]"
             alt="图片"
+            v-lazy="list.cover.images[0]"
           />
         </div>
         <!-- 多图区域 -->
@@ -21,7 +21,7 @@
             v-for="(item, index) in list.cover.images"
             :key="index"
             class="thumb"
-            :src="item"
+            v-lazy="item"
           />
         </div>
       </template>

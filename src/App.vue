@@ -1,6 +1,18 @@
 <template>
   <div class="app">
-    <router-view></router-view>
+    <!-- 设置缓存组件，包裹一级路由 -->
+    <keep-alive
+      :exclude="[
+        'ArticleDetail',
+        'Login',
+        'Search',
+        'SearchResult',
+        'User',
+        'UserDetail',
+      ]"
+    >
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 

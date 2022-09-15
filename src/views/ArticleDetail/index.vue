@@ -91,6 +91,7 @@ import { timeAgo } from "@/utils/formate";
 import { getAttentionApi } from "@/api";
 import CommentList from "./CommentList.vue";
 export default {
+  name: 'ArticleDetail',
   components: {
     CommentList,
   },
@@ -100,6 +101,7 @@ export default {
     };
   },
   async created() {
+    // 获取文章详情
     const articleResultResult = await getArticlDetailApi({
       artId: this.$route.query.artid,
     });
@@ -113,16 +115,18 @@ export default {
         //关注  -> 取关
         this.articleDetail.is_followed = false;
         // 发送取消关注-存储到后台中
-        await concelAttentionApi({
+        const res = await concelAttentionApi({
           targetId: this.articleDetail.aut_id,
         });
+        console.log(res,'取消关注');
       } else {
         //取关  -> 关注
         this.articleDetail.is_followed = true;
         // 发送关注用户网络请求-存储在后台中
-        await getAttentionApi({
+        const res = await getAttentionApi({
           userId: this.articleDetail.aut_id,
         });
+        console.log(res, '关注用户');
       }
     },
     // 点赞按钮
